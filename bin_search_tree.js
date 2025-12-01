@@ -1,14 +1,14 @@
-function Node() {
+function Node(data) {
     return {
-        data,
-        left,
-        right,
+        data: data,
+        left: null,
+        right: null,
     }
 }
 
 function Tree(arr = []) {
     return {
-        root,
+        root: buildTree(arr),
     }
 }
 
@@ -16,7 +16,21 @@ function buildTree(arr) {
     arr.sort();
     arr = [...new Set(arr)].sort((a, b) => a - b);
 
-    console.log(arr);
+    function sortedArrayToBSTRec(arr, start, end) {
+      if (start > end) return null;
+
+      let mid = start + Math.floor((end - start) / 2);
+      let root = Node(arr[mid]);
+
+      root.left = sortedArrayToBSTRec(arr, start, mid - 1);
+      root.right = sortedArrayToBSTRec(arr, mid + 1, end);
+
+      return root;
+    }
+
+    root = sortedArrayToBSTRec(arr, 0, arr.length - 1);
+
+    return root
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -32,4 +46,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-buildTree([9,8,9,3,4,1,34, 3,22, 22, 2]);
+// buildTree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
+tree = Tree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
+prettyPrint(tree.root);
