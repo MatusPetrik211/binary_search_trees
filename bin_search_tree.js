@@ -28,7 +28,7 @@ function buildTree(arr) {
       return root;
     }
 
-    root = sortedArrayToBSTRec(arr, 0, arr.length - 1);
+    const root = sortedArrayToBSTRec(arr, 0, arr.length - 1);
 
     return root
 }
