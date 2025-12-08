@@ -9,6 +9,19 @@ function Node(data) {
 function Tree(arr = []) {
     return {
         root: buildTree(arr),
+        insert(root, key) {
+          if (root === null) {
+            return Node(key);
+          }
+
+          if (root.data > key) {
+            root.left = this.insert(root.left, key)
+          } else {
+            root.right = this.insert(root.right, key)
+          }
+
+          return root
+        },
     }
 }
 
@@ -49,3 +62,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 // buildTree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
 tree = Tree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
 prettyPrint(tree.root);
+tree.insert(tree.root, 13);
+console.log(tree.root);
+prettyPrint(tree.root);
+// prettyPrint(tree.root);
