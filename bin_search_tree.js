@@ -22,7 +22,54 @@ function Tree(arr = []) {
 
           return root
         },
+        delete(root, x) {
+        if (root === null)
+          return root;
+
+        if (root.data > x)
+          root.left = delNode(root.left, x);
+        else if (root.data < x)
+          root.right = delNode(root.right, x);
+        else {
+          // Node with 0 or 1 child
+          if (root.left === null)
+            return root.right;
+          if (root.right === null)
+            return root.left;
+
+          // Node with 2 children
+          const succ = getSuccessor(root);
+          root.data = succ.data;
+          root.right = delNode(root.right, succ.data);
+        }
+        return root;
+      },
+      find(value) {
+        let root = this.root;
+
+        while (root) {
+          if (root.data === value) {
+            return root;
+          } else if (root.data < value) {
+            root = root.right;
+          } else if (root.data > value) {
+            root = root.left;
+          }
+        }
+
+        return root;
+      },
+      // levelOrderForEach(callback) {
+      //   console.log(callback);
+      // }
     }
+}
+
+function getSuccessor(curr) {
+    curr = curr.right;
+    while (curr !== null && curr.left !== null)
+        curr = curr.left;
+    return curr;
 }
 
 function buildTree(arr) {
@@ -66,3 +113,11 @@ tree.insert(tree.root, 13);
 console.log(tree.root);
 prettyPrint(tree.root);
 // prettyPrint(tree.root);
+console.log(tree.find(13));
+console.log(tree.find(15));
+console.log(tree.find(30));
+console.log(tree.find(34));
+console.log(tree.find(8));
+// tree.levelOrderForEach(() => {
+//   console.log("hello");
+// });
