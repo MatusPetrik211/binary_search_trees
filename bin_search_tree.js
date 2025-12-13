@@ -59,9 +59,25 @@ function Tree(arr = []) {
 
         return root;
       },
-      // levelOrderForEach(callback) {
-      //   console.log(callback);
-      // }
+      levelOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+          // throw new Error("Passed argument is not a function! callback is required");
+          console.log(typeof callback);
+        }
+
+        queue = [this.root]
+        while (queue.length !== 0) {
+          curr = queue.shift();
+          curr = callback(curr);
+          if (curr?.left && curr.left !== null) {
+            queue.push(curr.left);
+          }
+          if (curr?.right && curr.right !== null) {
+            queue.push(curr.right);
+          }
+        }
+
+      }
     }
 }
 
@@ -118,6 +134,8 @@ console.log(tree.find(15));
 console.log(tree.find(30));
 console.log(tree.find(34));
 console.log(tree.find(8));
-// tree.levelOrderForEach(() => {
-//   console.log("hello");
-// });
+tree.levelOrderForEach((node) => {
+  node.data *= 2;
+  return node;
+});
+prettyPrint(tree.root);
