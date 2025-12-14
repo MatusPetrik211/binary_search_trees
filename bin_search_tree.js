@@ -61,23 +61,137 @@ function Tree(arr = []) {
       },
       levelOrderForEach(callback) {
         if (typeof callback !== 'function') {
-          // throw new Error("Passed argument is not a function! callback is required");
-          console.log(typeof callback);
+          throw new Error("Passed argument is not a function! callback is required");
         }
 
-        queue = [this.root]
+        if (!this.root) return;
+
+        const queue = [this.root]
         while (queue.length !== 0) {
-          curr = queue.shift();
-          curr = callback(curr);
-          if (curr?.left && curr.left !== null) {
+          let curr = queue.shift();
+          callback(curr);
+          console.log(curr.data);
+          if (curr?.left) {
             queue.push(curr.left);
           }
-          if (curr?.right && curr.right !== null) {
+          if (curr?.right) {
             queue.push(curr.right);
           }
         }
+      },
+      levelOrderForEachRec(callback) {
+        if (typeof callback !== 'function') {
+          throw new Error("Passed argument is not a function! callback is required");
+        }
 
-      }
+        if (!this.root) return;
+
+        const queue = [this.root]
+        console.log(this.root.data);
+        function rec() {
+          if (queue.length === 0) {
+            return;
+          }
+
+          let curr = queue.shift();
+          callback(curr);
+          
+          if (curr?.left) {
+            queue.push(curr.left);
+            console.log(curr.left.data);
+          }
+
+          if (curr?.right) {
+            queue.push(curr.right);
+            console.log(curr.right.data);
+          }
+
+          rec();
+        }
+        
+        rec();
+      },
+      preOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+          throw new Error("Passed argument is not a function! callback is required");
+        }
+
+        if (!this.root) return;
+
+        const queue = []
+
+        function rec(root) {
+          callback(root);
+          queue.push(root);
+          console.log(root.data);
+
+          if (root?.left) {
+            rec(root.left);
+          }
+
+          if (root?.right) {
+            rec(root.right);
+          }
+
+          return root
+        }
+        
+        rec(this.root);
+      },
+      inOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+          throw new Error("Passed argument is not a function! callback is required");
+        }
+
+        if (!this.root) return;
+
+        const queue = []
+
+        function rec(root) {
+          if (root?.left) {
+            rec(root.left);
+          }
+          
+          callback(root);
+          queue.push(root);
+          console.log(root.data);
+
+          if (root?.right) {
+            rec(root.right);
+          }
+
+          return root
+        }
+        
+        rec(this.root);
+      },
+      postOrderForEach(callback) {
+        if (typeof callback !== 'function') {
+          throw new Error("Passed argument is not a function! callback is required");
+        }
+
+        if (!this.root) return;
+
+        const queue = []
+
+        function rec(root) {
+          if (root?.left) {
+            rec(root.left);
+          }
+
+          if (root?.right) {
+            rec(root.right);
+          }
+
+          callback(root);
+          queue.push(root);
+          console.log(root.data);
+
+          return root
+        }
+        
+        rec(this.root);
+      },
     }
 }
 
@@ -139,3 +253,34 @@ tree.levelOrderForEach((node) => {
   return node;
 });
 prettyPrint(tree.root);
+tree.levelOrderForEachRec((node) => {
+  node.data /= 2;
+  return node;
+});
+prettyPrint(tree.root);
+// try {
+//   tree.levelOrderForEach();
+// } catch(e) {
+//   console.log(e);
+// }
+console.log("level order");
+tree.levelOrderForEach((node) => {
+  return node;
+});
+console.log("level order rec");
+tree.levelOrderForEachRec((node) => {
+  return node;
+});
+console.log("pre order");
+tree.preOrderForEach((node) => {
+  return node;
+});
+console.log("in order");
+tree.inOrderForEach((node) => {
+  return node;
+});
+console.log("post order");
+tree.postOrderForEach((node) => {
+  return node;
+});
+
