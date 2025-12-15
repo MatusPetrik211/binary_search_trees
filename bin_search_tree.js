@@ -192,7 +192,23 @@ function Tree(arr = []) {
         
         rec(this.root);
       },
-    }
+      height(value) {
+        let currNode = this.find(value);
+
+        if (!currNode) {
+          return null;
+        }
+
+        function findHeight(node) {
+          if (node === null) return null;
+          return 1 + Math.max(findHeight(node.left), findHeight(node.right));
+        }
+
+        let height = findHeight(currNode);
+
+        return height
+      },
+  }
 }
 
 function getSuccessor(curr) {
@@ -283,4 +299,12 @@ console.log("post order");
 tree.postOrderForEach((node) => {
   return node;
 });
+
+console.log(tree.height(4));
+console.log(tree.height(9));
+console.log(tree.height(8));
+console.log(tree.height(13));
+console.log(tree.height(213));
+console.log(tree.height(23));
+
 
