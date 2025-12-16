@@ -208,6 +208,25 @@ function Tree(arr = []) {
 
         return height
       },
+      depth(value) {
+        let root = this.root;
+
+        let depth = 0;
+
+        while (root) {
+          if (root.data === value) {
+            return depth;
+          } else if (root.data < value) {
+            root = root.right;
+            depth++;
+          } else if (root.data > value) {
+            root = root.left;
+            depth++;
+          }
+        }
+
+        return null;
+      },
   }
 }
 
@@ -307,4 +326,10 @@ console.log(tree.height(13));
 console.log(tree.height(213));
 console.log(tree.height(23));
 
+console.log(tree.depth(4));
+console.log(tree.depth(9));
+console.log(tree.depth(8));
+console.log(tree.depth(13));
+console.log(tree.depth(213));
+console.log(tree.depth(23));
 
