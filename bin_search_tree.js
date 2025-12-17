@@ -227,6 +227,26 @@ function Tree(arr = []) {
 
         return null;
       },
+      isBalanced() {
+        let root = this.root;
+
+        const checkBalance = (root) => {
+          if (!root.left || !root.right) {
+            return
+          }
+          else if (this.height(root.left.data) + 1 < this.height(root.right.data) 
+          || this.height(root.left.data) > this.height(root.right.data) + 1) {
+            return false
+          }
+
+          checkBalance(root.left);
+          checkBalance(root.right)
+
+          return true
+        }
+
+        return checkBalance(root)
+      }
   }
 }
 
@@ -332,4 +352,8 @@ console.log(tree.depth(8));
 console.log(tree.depth(13));
 console.log(tree.depth(213));
 console.log(tree.depth(23));
+
+console.log(tree.isBalanced());
+tree.insert(tree.root, 36);
+console.log(tree.isBalanced());
 
