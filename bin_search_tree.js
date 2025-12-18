@@ -9,40 +9,47 @@ function Node(data) {
 function Tree(arr = []) {
     return {
         root: buildTree(arr),
-        insert(root, key) {
-          if (root === null) {
-            return Node(key);
-          }
+        insert(value) {
+          function insertRec(root, key) {
+            if (root === null) {
+              return Node(key);
+            }
 
-          if (root.data > key) {
-            root.left = this.insert(root.left, key)
-          } else {
-            root.right = this.insert(root.right, key)
-          }
+            if (root.data > key) {
+              root.left = insertRec(root.left, key)
+            } else {
+              root.right = insertRec(root.right, key)
+            }
 
-          return root
+            return root
+          }
+          
+          return insertRec(this.root, value);
         },
-        delete(root, x) {
-        if (root === null)
+        delete(value) {
+        function deleteRec(root, key) {
+          if (root === null)
+            return root;
+
+          if (root.data > key)
+            root.left = deleteRec(root.left, key);
+          else if (root.data < key)
+            root.right = deleteRec(root.right, key);
+          else {
+            // Node with 0 or 1 child
+            if (root.left === null)
+              return root.right;
+            if (root.right === null)
+              return root.left;
+
+            // Node with 2 children
+            const succ = getSuccessor(root);
+            root.data = succ.data;
+            root.right = deleteRec(root.right, succ.data);
+          }
           return root;
-
-        if (root.data > x)
-          root.left = delNode(root.left, x);
-        else if (root.data < x)
-          root.right = delNode(root.right, x);
-        else {
-          // Node with 0 or 1 child
-          if (root.left === null)
-            return root.right;
-          if (root.right === null)
-            return root.left;
-
-          // Node with 2 children
-          const succ = getSuccessor(root);
-          root.data = succ.data;
-          root.right = delNode(root.right, succ.data);
         }
-        return root;
+        return deleteRec(this.root, value);
       },
       find(value) {
         let root = this.root;
@@ -294,7 +301,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 // buildTree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
 tree = Tree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
 prettyPrint(tree.root);
-tree.insert(tree.root, 13);
+tree.insert(13);
 console.log(tree.root);
 prettyPrint(tree.root);
 // prettyPrint(tree.root);
@@ -354,6 +361,16 @@ console.log(tree.depth(213));
 console.log(tree.depth(23));
 
 console.log(tree.isBalanced());
-tree.insert(tree.root, 36);
+tree.insert(36);
 console.log(tree.isBalanced());
+tree.insert(5);
+tree.insert(7);
+tree.insert(6);
+prettyPrint(tree.root);
+tree.delete(7);
+prettyPrint(tree.root);
+tree.delete(6);
+prettyPrint(tree.root);
+tree.delete(4);
+prettyPrint(tree.root);
 
