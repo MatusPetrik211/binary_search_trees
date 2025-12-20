@@ -253,6 +253,29 @@ function Tree(arr = []) {
         }
 
         return checkBalance(root)
+      },
+      rebalance() {
+        function storeInorder(root, nodes) {
+          if (root ==- null) {
+            return;
+          }
+
+          if (root.left) {
+            storeInorder(root.left, nodes);
+          }
+
+          nodes.push(root.data);
+
+          if (root.right) {
+            storeInorder(root.right, nodes);
+          }
+        }
+
+        let nodes = [];
+
+        storeInorder(this.root, nodes);
+
+        this.root = buildTree(nodes);
       }
   }
 }
@@ -372,5 +395,8 @@ prettyPrint(tree.root);
 tree.delete(6);
 prettyPrint(tree.root);
 tree.delete(4);
+tree.delete(444);
+prettyPrint(tree.root);
+tree.rebalance()
 prettyPrint(tree.root);
 
