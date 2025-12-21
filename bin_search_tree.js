@@ -77,7 +77,7 @@ function Tree(arr = []) {
         while (queue.length !== 0) {
           let curr = queue.shift();
           callback(curr);
-          console.log(curr.data);
+          // console.log(curr.data);
           if (curr?.left) {
             queue.push(curr.left);
           }
@@ -94,7 +94,7 @@ function Tree(arr = []) {
         if (!this.root) return;
 
         const queue = [this.root]
-        console.log(this.root.data);
+        // console.log(this.root.data);
         function rec() {
           if (queue.length === 0) {
             return;
@@ -105,12 +105,12 @@ function Tree(arr = []) {
           
           if (curr?.left) {
             queue.push(curr.left);
-            console.log(curr.left.data);
+            // console.log(curr.left.data);
           }
 
           if (curr?.right) {
             queue.push(curr.right);
-            console.log(curr.right.data);
+            // console.log(curr.right.data);
           }
 
           rec();
@@ -130,7 +130,7 @@ function Tree(arr = []) {
         function rec(root) {
           callback(root);
           queue.push(root);
-          console.log(root.data);
+          // console.log(root.data);
 
           if (root?.left) {
             rec(root.left);
@@ -161,7 +161,7 @@ function Tree(arr = []) {
           
           callback(root);
           queue.push(root);
-          console.log(root.data);
+          // console.log(root.data);
 
           if (root?.right) {
             rec(root.right);
@@ -192,7 +192,7 @@ function Tree(arr = []) {
 
           callback(root);
           queue.push(root);
-          console.log(root.data);
+          // console.log(root.data);
 
           return root
         }
@@ -235,11 +235,15 @@ function Tree(arr = []) {
         return null;
       },
       isBalanced() {
+        if (this.root == null) {
+          return null
+        }
+
         let root = this.root;
 
         const checkBalance = (root) => {
           if (!root.left || !root.right) {
-            return
+            return true
           }
           else if (this.height(root.left.data) + 1 < this.height(root.right.data) 
           || this.height(root.left.data) > this.height(root.right.data) + 1) {
@@ -322,7 +326,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 // buildTree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
-tree = Tree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
+const tree = Tree([9, 8, 9, 3, 4, 1, 34, 3, 22, 22, 2]);
 prettyPrint(tree.root);
 tree.insert(13);
 console.log(tree.root);
@@ -399,4 +403,69 @@ tree.delete(444);
 prettyPrint(tree.root);
 tree.rebalance()
 prettyPrint(tree.root);
+
+function randomArray() {
+  const len = Math.floor((Math.random() * 10) + 1);
+  let arr = []
+  for (let i = 0; i < len; i++) {
+    let rand = Math.floor((Math.random() * 100) + 1);
+    while (true) {
+      if (arr.includes(rand)) {
+        rand = Math.floor((Math.random() * 100) + 1);
+      } else {
+        break;
+      }
+    }
+    arr.push(rand);
+  }
+
+  return arr;
+}
+
+let testTree = Tree(randomArray());
+prettyPrint(testTree.root);
+console.log(testTree.isBalanced());
+console.log("level order");
+testTree.levelOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("pre order");
+testTree.preOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("in order");
+testTree.inOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("post order");
+testTree.postOrderForEach((node) => {
+  console.log(node.data);
+});
+
+for (let i = 0; i < 30; i++) {
+  testTree.insert(Math.floor((Math.random() * 100) + 1));
+}
+
+console.log(testTree.isBalanced());
+prettyPrint(testTree.root);
+testTree.rebalance();
+console.log(testTree.isBalanced());
+prettyPrint(testTree.root);
+
+testTree.levelOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("pre order");
+testTree.preOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("in order");
+testTree.inOrderForEach((node) => {
+  console.log(node.data);
+});
+console.log("post order");
+testTree.postOrderForEach((node) => {
+  console.log(node.data);
+});
+
 
